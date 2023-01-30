@@ -99,6 +99,12 @@ public class HomeControlador {
         sumaTotal(sumaTotal, model);
         return "usuario/carrito";
     }
+    
+    @GetMapping("/getCart")
+    public String getCart(Model model){
+        sumaTotal(0, model);
+        return "/usuario/carrito";
+    }
 
     public void sumaTotal(double sumaTotal, Model model) {
         sumaTotal = detalles.stream().mapToDouble(dt -> dt.getTotal()).sum();
