@@ -11,7 +11,7 @@ import org.springframework.stereotype.Repository;
  * @author Raúl Gómez
  */
 @Repository
-public interface OrdenRepositorio extends JpaRepository<Orden, Integer> {
+public interface IOrdenRepositorio extends JpaRepository<Orden, Integer> {
 
     List<Orden> findByUsuario(Usuario usuario);
 }

@@ -4,8 +4,6 @@ import com.my.ecommerce.spring.entidades.DetalleOrden;
 import com.my.ecommerce.spring.entidades.Orden;
 import com.my.ecommerce.spring.entidades.Producto;
 import com.my.ecommerce.spring.entidades.Usuario;
-import com.my.ecommerce.spring.servicio.ProductoServicio;
-import com.my.ecommerce.spring.servicio.UsuarioServicio;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
@@ -18,6 +16,8 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
+import com.my.ecommerce.spring.servicio.IProductoServicio;
+import com.my.ecommerce.spring.servicio.IUsuarioServicio;
 
 /**
  *
@@ -30,10 +30,10 @@ public class HomeControlador {
     private final Logger log = LoggerFactory.getLogger(HomeControlador.class);
 
     @Autowired
-    private ProductoServicio productoServicio;
+    private IProductoServicio productoServicio;
 
     @Autowired
-    private UsuarioServicio usuarioServicio;
+    private IUsuarioServicio usuarioServicio;
 
     //para almacenar los detalles de la orden
     List<DetalleOrden> detalles = new ArrayList<>();

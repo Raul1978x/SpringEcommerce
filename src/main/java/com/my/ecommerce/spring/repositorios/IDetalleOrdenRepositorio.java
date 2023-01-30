@@ -1,7 +1,6 @@
 package com.my.ecommerce.spring.repositorios;
 
-import com.my.ecommerce.spring.entidades.Usuario;
-import java.util.Optional;
+import com.my.ecommerce.spring.entidades.DetalleOrden;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 
@@ -10,7 +9,6 @@ import org.springframework.stereotype.Repository;
  * @author Raúl Gómez
  */
 @Repository
-public interface UsuarioRepositorio extends JpaRepository<Usuario, Integer> {
-
-    Optional<Usuario> findByEmail(String email);
+public interface IDetalleOrdenRepositorio extends JpaRepository<DetalleOrden, Integer>{
+    
 }

@@ -10,7 +10,7 @@ import java.util.Optional;
  */
 
 
-public interface ProductoServicio {
+public interface IProductoServicio {
 
     public Producto save(Producto producto);
     public Optional<Producto> get(Integer id);

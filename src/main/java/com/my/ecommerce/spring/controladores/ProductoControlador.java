@@ -2,7 +2,6 @@ package com.my.ecommerce.spring.controladores;
 
 import com.my.ecommerce.spring.entidades.Producto;
 import com.my.ecommerce.spring.entidades.Usuario;
-import com.my.ecommerce.spring.servicio.ProductoServicio;
 import com.my.ecommerce.spring.servicio.UploadFileServicio;
 import java.io.IOException;
 import java.util.Optional;
@@ -16,6 +15,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.multipart.MultipartFile;
+import com.my.ecommerce.spring.servicio.IProductoServicio;
 
 /**
  *
@@ -28,7 +28,7 @@ public class ProductoControlador {
     private final Logger LOGGER = LoggerFactory.getLogger(ProductoControlador.class);
 
     @Autowired
-    private ProductoServicio productoServicio;
+    private IProductoServicio productoServicio;
 
     @Autowired
     private UploadFileServicio upload;

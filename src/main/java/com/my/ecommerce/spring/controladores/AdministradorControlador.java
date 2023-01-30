@@ -1,13 +1,13 @@
 package com.my.ecommerce.spring.controladores;
 
 import com.my.ecommerce.spring.entidades.Producto;
-import com.my.ecommerce.spring.servicio.ProductoServicio;
 import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
+import com.my.ecommerce.spring.servicio.IProductoServicio;
 
 /**
  *
@@ -19,7 +19,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 public class AdministradorControlador {
 
     @Autowired
-    private ProductoServicio productoServicio;
+    private IProductoServicio productoServicio;
     
     @GetMapping("")
     public String home(Model model){

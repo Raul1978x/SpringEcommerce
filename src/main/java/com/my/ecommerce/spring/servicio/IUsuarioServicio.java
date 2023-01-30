@@ -8,7 +8,7 @@ import java.util.Optional;
  * @author Raúl Gómez
  */
 
-public interface UsuarioServicio {
+public interface IUsuarioServicio {
 
    public Optional<Usuario> findById(Integer id);
 }
