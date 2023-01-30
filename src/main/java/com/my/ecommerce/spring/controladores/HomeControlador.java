@@ -3,7 +3,9 @@ package com.my.ecommerce.spring.controladores;
 import com.my.ecommerce.spring.entidades.DetalleOrden;
 import com.my.ecommerce.spring.entidades.Orden;
 import com.my.ecommerce.spring.entidades.Producto;
+import com.my.ecommerce.spring.entidades.Usuario;
 import com.my.ecommerce.spring.servicio.ProductoServicio;
+import com.my.ecommerce.spring.servicio.UsuarioServicio;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
@@ -29,6 +31,9 @@ public class HomeControlador {
 
     @Autowired
     private ProductoServicio productoServicio;
+
+    @Autowired
+    private UsuarioServicio usuarioServicio;
 
     //para almacenar los detalles de la orden
     List<DetalleOrden> detalles = new ArrayList<>();
@@ -99,11 +104,20 @@ public class HomeControlador {
         sumaTotal(sumaTotal, model);
         return "usuario/carrito";
     }
-    
+
     @GetMapping("/getCart")
-    public String getCart(Model model){
+    public String getCart(Model model) {
         sumaTotal(0, model);
         return "/usuario/carrito";
+    }
+
+    @GetMapping("/order")
+    public String order(Model model) {
+        Usuario usuario = usuarioServicio.findById(1).get();
+        model.addAttribute("usuario", usuario);
+        sumaTotal(0, model);
+
+        return "usuario/resumenorden";
     }
 
     public void sumaTotal(double sumaTotal, Model model) {
