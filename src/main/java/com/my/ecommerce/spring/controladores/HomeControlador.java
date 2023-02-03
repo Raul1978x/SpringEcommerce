@@ -4,6 +4,8 @@ import com.my.ecommerce.spring.entidades.DetalleOrden;
 import com.my.ecommerce.spring.entidades.Orden;
 import com.my.ecommerce.spring.entidades.Producto;
 import com.my.ecommerce.spring.entidades.Usuario;
+import com.my.ecommerce.spring.servicio.IDetalleOrdenServicio;
+import com.my.ecommerce.spring.servicio.IOrdenServicio;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
@@ -18,6 +20,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import com.my.ecommerce.spring.servicio.IProductoServicio;
 import com.my.ecommerce.spring.servicio.IUsuarioServicio;
+import java.util.Date;
 
 /**
  *
@@ -35,6 +38,12 @@ public class HomeControlador {
     @Autowired
     private IUsuarioServicio usuarioServicio;
 
+    @Autowired
+    private IOrdenServicio ordenServicio;
+    
+    @Autowired
+    private IDetalleOrdenServicio detalleOrdenServicio;
+    
     //para almacenar los detalles de la orden
     List<DetalleOrden> detalles = new ArrayList<>();
     //datos de la orden     
@@ -120,6 +129,28 @@ public class HomeControlador {
         return "usuario/resumenorden";
     }
 
+    @GetMapping("/saveOrder")
+    public String saveOrder(){
+        orden.setFechaCreacion(new Date());
+        orden.setNumero(ordenServicio.generarNumeroOrden());
+        
+        Usuario usuario = usuarioServicio.findById(1).get();
+        
+        orden.setUsuario(usuario);
+        ordenServicio.save(orden);
+        
+        for (DetalleOrden dt : detalles) {
+            dt.setOrden(orden);
+            detalleOrdenServicio.save(dt);
+        }
+        
+        orden = new Orden();
+        detalles.clear();
+        
+        return "redirect:/";
+    }
+    
+    
     public void sumaTotal(double sumaTotal, Model model) {
         sumaTotal = detalles.stream().mapToDouble(dt -> dt.getTotal()).sum();
 

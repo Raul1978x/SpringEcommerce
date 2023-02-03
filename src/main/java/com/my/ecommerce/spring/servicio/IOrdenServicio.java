@@ -1,6 +1,7 @@
 package com.my.ecommerce.spring.servicio;
 
 import com.my.ecommerce.spring.entidades.Orden;
+import java.util.List;
 
 /**
  *
@@ -9,6 +10,7 @@ import com.my.ecommerce.spring.entidades.Orden;
 
 public interface IOrdenServicio {
 
+    public List<Orden> findAll();
     public Orden save(Orden orden);
-    
+    public String generarNumeroOrden();
 }
