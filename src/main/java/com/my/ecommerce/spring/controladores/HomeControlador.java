@@ -21,6 +21,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import com.my.ecommerce.spring.servicio.IProductoServicio;
 import com.my.ecommerce.spring.servicio.IUsuarioServicio;
 import java.util.Date;
+import java.util.stream.Collectors;
 
 /**
  *
@@ -150,7 +151,14 @@ public class HomeControlador {
         return "redirect:/";
     }
     
-    
+    @PostMapping("/search")
+    public String searchProduct(@RequestParam String nombre, Model model){
+        log.info("nombre del producto: "+ nombre);
+        List<Producto> productos = productoServicio.findAll().stream().filter(p -> p.getNombre().contains(nombre)).collect(Collectors.toList());
+                
+        model.addAttribute("productos", productos);
+        return "usuario/home";
+    }
     public void sumaTotal(double sumaTotal, Model model) {
         sumaTotal = detalles.stream().mapToDouble(dt -> dt.getTotal()).sum();
 
