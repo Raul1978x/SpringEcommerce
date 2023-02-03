@@ -2,6 +2,8 @@ package com.my.ecommerce.spring.controladores;
 
 import com.my.ecommerce.spring.entidades.Usuario;
 import com.my.ecommerce.spring.servicio.IUsuarioServicio;
+import jakarta.servlet.http.HttpSession;
+import java.util.Optional;
 import org.slf4j.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -43,4 +45,23 @@ public class UsuarioControlador {
 ////		usuarioService.save(usuario);		
 //		return "redirect:/";
 //	}
+    @GetMapping("/login")
+    public String login(){
+        return "usuario/login";
+    }
+
+    @PostMapping("/acceder")
+    public String acceder(Usuario usuario, HttpSession session){
+        log.info("accesos: {}", usuario);
+        Optional<Usuario> user= usuarioServicio.findByEmail(usuario.getEmail());
+        log.info("usuario de bd: {}", user);
+        if (user.isPresent()) {
+            session.setAttribute("idusuario", user.get().getId());
+            if (user.get().getTipo().equalsIgnoreCase("admin")) {
+                return "redirect:/administrador";
+            }
+        }
+        return "redirect:/";
+    }
+    
 }

@@ -11,5 +11,6 @@ import java.util.Optional;
 public interface IUsuarioServicio {
 
    public Optional<Usuario> findById(Integer id);
+   public Optional<Usuario> findByEmail(String email);
    public Usuario save(Usuario usuario);
 }
