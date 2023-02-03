@@ -11,16 +11,19 @@ import com.my.ecommerce.spring.repositorios.IUsuarioRepositorio;
  * @author Raúl Gómez
  */
 @Service
-public class UsuarioServicioImpl implements IUsuarioServicio{
+public class UsuarioServicioImpl implements IUsuarioServicio {
 
     @Autowired
-    private IUsuarioRepositorio UsuarioRepositorio;
+    private IUsuarioRepositorio usuarioRepositorio;
 
     @Override
     public Optional<Usuario> findById(Integer id) {
-        return UsuarioRepositorio.findById(id);
+        return usuarioRepositorio.findById(id);
     }
-    
 
-   
+    @Override
+    public Usuario save(Usuario usuario) {
+        return usuarioRepositorio.save(usuario);
+    }
+
 }
