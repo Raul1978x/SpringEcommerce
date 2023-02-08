@@ -16,6 +16,8 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.multipart.MultipartFile;
 import com.my.ecommerce.spring.servicio.IProductoServicio;
+import com.my.ecommerce.spring.servicio.UsuarioServicioImpl;
+import jakarta.servlet.http.HttpSession;
 
 /**
  *
@@ -33,6 +35,9 @@ public class ProductoControlador {
     @Autowired
     private UploadFileServicio upload;
 
+    @Autowired
+    private UsuarioServicioImpl usuarioServicio;
+
     @GetMapping("")
     public String show(Model model) {
         model.addAttribute("productos", productoServicio.findAll());
@@ -45,9 +50,11 @@ public class ProductoControlador {
     }
 
     @PostMapping("/guardar")
-    public String guardar(Producto producto, @RequestParam("img") MultipartFile file) throws IOException {
+    public String guardar(Producto producto, @RequestParam("img") MultipartFile file, HttpSession session) throws IOException {
         LOGGER.info("Este es el objeto producto {}", producto);
-        Usuario usuario = new Usuario(1, "", "", "", "", "", "", "", null, null);
+//        Usuario usuario = usuarioServicioImpl.findById(Integer.parseInt(session.getAttribute("idusuario").toString())).get();
+        Usuario usuario = usuarioServicio.findById(Integer.parseInt(session.getAttribute("idusuario").toString())).get();
+        LOGGER.info("El usuario login es: {}", usuario);
         producto.setUsuario(usuario);
 //  imagen  
         if (producto.getId() == null) { //cuando se crea un producto
@@ -82,10 +89,10 @@ public class ProductoControlador {
 
     @PostMapping("/update")
     public String update(Producto producto, @RequestParam("img") MultipartFile file) throws IOException {
-        
-            Producto p = new Producto();
-            p = productoServicio.get(producto.getId()).get();
-        
+
+        Producto p = new Producto();
+        p = productoServicio.get(producto.getId()).get();
+
         if (file.isEmpty()) { // editamos el producto pero no cambiamos la imagen
             producto.setImagen(p.getImagen());
 

@@ -20,6 +20,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import com.my.ecommerce.spring.servicio.IProductoServicio;
 import com.my.ecommerce.spring.servicio.IUsuarioServicio;
+import jakarta.servlet.http.HttpSession;
 import java.util.Date;
 import java.util.stream.Collectors;
 
@@ -41,19 +42,24 @@ public class HomeControlador {
 
     @Autowired
     private IOrdenServicio ordenServicio;
-    
+
     @Autowired
     private IDetalleOrdenServicio detalleOrdenServicio;
-    
+
     //para almacenar los detalles de la orden
     List<DetalleOrden> detalles = new ArrayList<>();
     //datos de la orden     
     Orden orden = new Orden();
 
     @GetMapping("")
-    public String home(Model model) {
+    public String home(Model model, HttpSession session) {
 
+//        log.info("Sesion del usuario: {}", session.getAttribute("idusuario"));
+//        model.addAttribute("productos", productoServicio.findAll());
+        log.info("Sesion del usuario: {}", session.getAttribute("idusuario"));
         model.addAttribute("productos", productoServicio.findAll());
+        //session
+        model.addAttribute("sesion", session.getAttribute("idusuario"));
 
         return "usuario/home";
     }
@@ -116,14 +122,17 @@ public class HomeControlador {
     }
 
     @GetMapping("/getCart")
-    public String getCart(Model model) {
+    public String getCart(Model model, HttpSession session) {
         sumaTotal(0, model);
+
+        //sesion
+        model.addAttribute("sesion", session.getAttribute("idusuario"));
         return "/usuario/carrito";
     }
 
     @GetMapping("/order")
-    public String order(Model model) {
-        Usuario usuario = usuarioServicio.findById(1).get();
+    public String order(Model model, HttpSession session) {
+        Usuario usuario = usuarioServicio.findById(Integer.parseInt(session.getAttribute("idusuario").toString())).get();
         model.addAttribute("usuario", usuario);
         sumaTotal(0, model);
 
@@ -131,34 +140,35 @@ public class HomeControlador {
     }
 
     @GetMapping("/saveOrder")
-    public String saveOrder(){
+    public String saveOrder(HttpSession session) {
         orden.setFechaCreacion(new Date());
         orden.setNumero(ordenServicio.generarNumeroOrden());
-        
-        Usuario usuario = usuarioServicio.findById(1).get();
-        
+
+        Usuario usuario = usuarioServicio.findById(Integer.parseInt(session.getAttribute("idusuario").toString())).get();
+
         orden.setUsuario(usuario);
         ordenServicio.save(orden);
-        
+
         for (DetalleOrden dt : detalles) {
             dt.setOrden(orden);
             detalleOrdenServicio.save(dt);
         }
-        
+
         orden = new Orden();
         detalles.clear();
-        
+
         return "redirect:/";
     }
-    
+
     @PostMapping("/search")
-    public String searchProduct(@RequestParam String nombre, Model model){
-        log.info("nombre del producto: "+ nombre);
+    public String searchProduct(@RequestParam String nombre, Model model) {
+        log.info("nombre del producto: " + nombre);
         List<Producto> productos = productoServicio.findAll().stream().filter(p -> p.getNombre().contains(nombre)).collect(Collectors.toList());
-                
+
         model.addAttribute("productos", productos);
         return "usuario/home";
     }
+
     public void sumaTotal(double sumaTotal, Model model) {
         sumaTotal = detalles.stream().mapToDouble(dt -> dt.getTotal()).sum();
 
