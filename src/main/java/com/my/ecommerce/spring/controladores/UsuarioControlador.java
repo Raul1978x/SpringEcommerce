@@ -1,8 +1,11 @@
 package com.my.ecommerce.spring.controladores;
 
+import com.my.ecommerce.spring.entidades.Orden;
 import com.my.ecommerce.spring.entidades.Usuario;
+import com.my.ecommerce.spring.servicio.IOrdenServicio;
 import com.my.ecommerce.spring.servicio.IUsuarioServicio;
 import jakarta.servlet.http.HttpSession;
+import java.util.List;
 import java.util.Optional;
 import org.slf4j.*;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -24,6 +27,9 @@ public class UsuarioControlador {
 
     @Autowired
     private IUsuarioServicio usuarioServicio;
+    
+    @Autowired
+    private IOrdenServicio ordenServicio;
 
     @GetMapping("/registro")
     public String create() {
@@ -71,6 +77,11 @@ public class UsuarioControlador {
     @GetMapping("/compras")
     public String obtenerCompras(Model model, HttpSession session){
         model.addAttribute("sesion", session.getAttribute("idusuario"));
+        
+        Usuario usuario = usuarioServicio.findById(Integer.parseInt(session.getAttribute("idusuario").toString())).get();
+        List<Orden> ordenes = ordenServicio.findByUsuario(usuario);
+        
+        model.addAttribute("ordenes", ordenes);
         return "usuario/compras";
     }
 }

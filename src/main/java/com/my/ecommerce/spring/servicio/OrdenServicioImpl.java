@@ -1,6 +1,7 @@
 package com.my.ecommerce.spring.servicio;
 
 import com.my.ecommerce.spring.entidades.Orden;
+import com.my.ecommerce.spring.entidades.Usuario;
 import com.my.ecommerce.spring.repositorios.IOrdenRepositorio;
 import java.util.ArrayList;
 import java.util.List;
@@ -63,6 +64,12 @@ public class OrdenServicioImpl implements IOrdenServicio{
             numeroConcatenado="0"+numero;
         }
         return numeroConcatenado;
+    }
+
+    @Override
+    public List<Orden> findByUsuario(Usuario usuario) {
+        return iOrdenRepositorio.findByUsuario(usuario);
+
     }
     
 }
