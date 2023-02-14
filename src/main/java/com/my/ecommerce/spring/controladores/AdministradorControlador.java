@@ -10,7 +10,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import com.my.ecommerce.spring.servicio.IProductoServicio;
 
 /**
- *
+ * esta clase esta bien
  * @author Raúl Gómez
  */
 
